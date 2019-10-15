@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header
+      :cau_tl_dung="cautldung"
+      :tong_answer="tonganswer">
+      
+    </Header>
     <b-container class="bv-example-row">
       <b-row>
         <b-col sm="6" offset="3">
@@ -8,6 +12,7 @@
             v-if="cauhoi.length"
             :cau_hoi_khac="cauhoi[index]"
             :next_index="nextItem"
+            :increment="incrementApp"
           >
           </question-box>
         </b-col>
@@ -29,13 +34,21 @@ export default {
   data() {
     return {
       cauhoi: [],
-      index: 0
+      index: 0,
+      cautldung: 0,
+      tonganswer: 0
     }
   },
   methods:
   {
     nextItem() {
       this.index++
+    },
+    incrementApp(isCorrect) {
+      if(isCorrect) {
+        this.cautldung++
+      }
+      this.tonganswer++
     }
   },
   mounted: function() {

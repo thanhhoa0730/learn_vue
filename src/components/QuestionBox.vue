@@ -8,13 +8,15 @@
     <hr class="my-4">
     <b-list-group>
       <b-list-group-item 
-      v-for="(reps, index) in traloi" 
+      v-for="(reps, index) in traloi " 
       :key="index"
-      @click.prevent="selectedcauhoi(index)"
+      @click.prevent="selectedcauhoi(reps,index)"
       :class="[selectedItem === index ? 'selected':'']">{{reps}}</b-list-group-item>
     </b-list-group>
 
-    <b-button variant="primary" href="#">Submit</b-button>
+    <b-button variant="primary" href="#" 
+    @click="submitAnswer()"
+    :disabled="selectedItem===null">Submit</b-button>
     <b-button variant="success" href="#" @click="next_index()">Next</b-button>
     </b-jumbotron>
   </div>
@@ -24,12 +26,13 @@ export default {
   props: {
     //cauhoikhac biến trong prop đc truyền từ component cha là App
     cau_hoi_khac: Object,
-    next_index: Function
+    next_index: Function,
+    increment: Function
   },
   data: function() {
     return {
       selectedItem: null,
-      //active: 'selected'
+      slectedValue: null,
     }
   },
   computed: {
@@ -37,16 +40,26 @@ export default {
       let rep = [...this.cau_hoi_khac.incorrect_answers]
       rep.push(this.cau_hoi_khac.correct_answer)
       return rep
+      
     }
   },
   methods:{
-    selectedcauhoi(index) {
+    selectedcauhoi(reps,index) {
       this.selectedItem = index;
-      console.log(index)
-    }
+      this.slectedValue = reps;
+      console.log(reps)
+    },
+    submitAnswer() {
+      //save câu tl có đúng k
+      let isCorrect = false;
+      if(this.slectedValue === this.cau_hoi_khac.correct_answer) {
+        isCorrect = true
+      }
+      this.increment(isCorrect)
+      console.log('this.selectedItem:'+' '+this.selectedItem)
+      console.log('this.cau_hoi_khac.correct_answer:'+' '+this.cau_hoi_khac.correct_answer)
+    },
   }
-  
-  
 }
 </script>
 <style scoped>
